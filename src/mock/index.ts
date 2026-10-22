@@ -209,6 +209,7 @@ export async function startMock() {
     ]
   })
 
+  
   mock.onGet(/video\/like/).reply(async (config) => {
     const page = getPage2(config.params)
     return [
