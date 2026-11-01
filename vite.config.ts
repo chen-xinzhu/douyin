@@ -1,13 +1,15 @@
-import { defineConfig, PluginOption, UserConfig } from 'vite'
+import type { PluginOption, UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { Plugin as importToCDN } from 'vite-plugin-cdn-import'
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 import { getLastCommit } from 'git-last-commit'
 import VueMacros from 'unplugin-vue-macros/vite'
 
 const lifecycle = process.env.npm_lifecycle_event
+
 
 export default defineConfig((): Promise<UserConfig> => {
   let latestCommitHash = ''
@@ -33,7 +35,9 @@ export default defineConfig((): Promise<UserConfig> => {
           }),
           // Vue(),
           // VueJsx(),
-          lifecycle === 'report' ? (visualizer({ open: false }) as any as PluginOption) : null,
+          lifecycle === 'report' ? (visualizer({
+            open: false
+          }) as any as PluginOption) : null,
           importToCDN({
             modules: [
               {
