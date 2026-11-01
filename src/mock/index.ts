@@ -8,10 +8,17 @@ import MockAdapter from 'axios-mock-adapter'
 
 const mock = new MockAdapter(axiosInstance)
 
-function getPage2(params: any): { limit: number; offset: number; pageNo: number } {
+
+function getPage2(params: any): { limit: number
+  offset: number
+  pageNo: number } {
   const offset = params.pageNo * params.pageSize
   const limit = params.pageNo * params.pageSize + params.pageSize
-  return { limit, offset, pageNo: params.pageNo }
+  return {
+    limit,
+    offset,
+    pageNo: params.pageNo
+  }
 }
 
 let allRecommendPosts = []
@@ -113,7 +120,7 @@ const t = [
 
 async function fetchData() {
   const baseStore = useBaseStore()
-  _fetch(BASE_URL + '/data/videos.md').then((r) => {
+  _fetch(`${ BASE_URL }/data/videos.md`).then((r) => {
     r.json().then(async (v) => {
       let userList = cloneDeep(baseStore.users)
       if (!userList.length) {
@@ -186,12 +193,17 @@ export async function startMock() {
     if (!videoIds.includes(String(id))) {
       id = videoIds[random(0, videoIds.length - 1)]
     }
-    const r2 = await _fetch(`${FILE_URL}/comments/video_id_${id}.md`)
+    const r2 = await _fetch(`${ FILE_URL }/comments/video_id_${ id }.md`)
     const v = await r2.json()
     if (v) {
-      return [200, { data: v, code: 200 }]
+      return [200, {
+        data: v,
+        code: 200
+      }]
     }
-    return [200, { code: 500 }]
+    return [200, {
+      code: 500
+    }]
   })
 
   mock.onGet(/video\/private/).reply(async (config) => {
@@ -209,7 +221,6 @@ export async function startMock() {
     ]
   })
 
-  
   mock.onGet(/video\/like/).reply(async (config) => {
     const page = getPage2(config.params)
     return [
@@ -230,7 +241,7 @@ export async function startMock() {
     if (!userVideos.length) {
       // let r = await fetch(BASE_URL + '/data/user-71158770.json')
       // let r = await fetch(BASE_URL + '/data/user-8357999.json')
-      const r = await _fetch(BASE_URL + '/data/user_video_list/user-12345xiaolaohu.md')
+      const r = await _fetch(`${ BASE_URL }/data/user_video_list/user-12345xiaolaohu.md`)
       const list = await r.json()
       const baseStore = useBaseStore()
       const userList = cloneDeep(baseStore.users)
@@ -295,30 +306,43 @@ export async function startMock() {
 
   mock.onGet(/user\/video_list/).reply(async (config) => {
     const id = config.params.id
-    const r2 = await _fetch(`${FILE_URL}/user_video_list/user-${id}.md`)
+    const r2 = await _fetch(`${ FILE_URL }/user_video_list/user-${ id }.md`)
     const v = await r2.json()
     if (v) {
-      return [200, { data: v, code: 200 }]
+      return [200, {
+        data: v,
+        code: 200
+      }]
     }
-    return [200, { code: 500 }]
+    return [200, {
+      code: 500
+    }]
   })
 
   mock.onGet(/user\/panel/).reply(async () => {
-    const r2 = await _fetch(BASE_URL + '/data/users.md')
+    const r2 = await _fetch(`${ BASE_URL }/data/users.md`)
     const v = await r2.json()
     // let item = v.find(a => a.uid === '68310389333')
     // let item = v.find(a => a.uid === '59054327754')
     const item = v.find((a) => a.uid === '2739632844317827')
     if (item) {
-      return [200, { data: item, code: 200 }]
+      return [200, {
+        data: item,
+        code: 200
+      }]
     }
-    return [200, { code: 500 }]
+    return [200, {
+      code: 500
+    }]
   })
 
   mock.onGet(/user\/friends/).reply(async () => {
-    const r2 = await _fetch(BASE_URL + '/data/users.md')
+    const r2 = await _fetch(`${ BASE_URL }/data/users.md`)
     const v = await r2.json()
-    return [200, { data: v, code: 200 }]
+    return [200, {
+      data: v,
+      code: 200
+    }]
   })
 
   mock.onGet(/historyOther/).reply(async (config) => {
@@ -341,7 +365,7 @@ export async function startMock() {
     const page = getPage2(config.params)
 
     if (!allRecommendPosts.length) {
-      const r = await _fetch(BASE_URL + '/data/posts.md')
+      const r = await _fetch(`${ BASE_URL }/data/posts.md`)
       allRecommendPosts = await r.json()
     }
     return [
@@ -361,7 +385,7 @@ export async function startMock() {
   mock.onGet(/shop\/recommended/).reply(async (config) => {
     const page = getPage2(config.params)
 
-    const r2 = await _fetch(BASE_URL + '/data/goods.md')
+    const r2 = await _fetch(`${ BASE_URL }/data/goods.md`)
     const v = await r2.json()
     return [
       200,
